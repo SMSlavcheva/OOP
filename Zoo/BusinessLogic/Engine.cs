@@ -49,6 +49,18 @@ namespace Zoo.BusinessLogic
             return null;
 
         }
+        /// <summary>
+        /// 1.
+        /// /monkey-chicken
+        /// buffalo -tomatoe
+        /// pig-salami
+        /// bear- saucage
+        /// 
+        /// 2.buffalo-bread
+        /// bear-stake
+        /// 
+        /// 3.
+        /// </summary>
 
         public IList<IAnimal> animals = new List<IAnimal>
         { new Tiger("Tigyrcho"),new Monkey("Munmun"),new Lion("Lioncho"),new Buffalo("Buffi"), new Cat("Mazz"),
@@ -59,6 +71,7 @@ namespace Zoo.BusinessLogic
         {
          new Poison(),new MeatFood(Meat_Enum.chicken.ToString()),new Poison(),new VeggieFood(Not_Meat_Enum.tomatoe.ToString()),new Poison(),
          new Poison(),new MeatFood(Meat_Enum.salami.ToString()),new Poison(),new MeatFood(Meat_Enum.sausage.ToString()),new Poison(),
+
          new Poison(),new VeggieFood(Not_Meat_Enum.bread.ToString()),new Poison(),new MeatFood(Meat_Enum.stake.ToString()),new Poison(),
          new Poison(),new VeggieFood(Not_Meat_Enum.bananas.ToString()),new Poison(),new MeatFood(Meat_Enum.sausage.ToString()),new Poison(),
          new Poison(),new VeggieFood(Not_Meat_Enum.bread.ToString()),new Poison(),new MeatFood(Meat_Enum.stake.ToString()),new Poison(),
@@ -74,6 +87,12 @@ namespace Zoo.BusinessLogic
         {
             for (int i = 0; i < 5; i++)//1
             {
+                if (animals.All(a=>a.Health==0))
+                {
+                    break;
+                }
+                var count = 0;
+                Console.WriteLine($" {i+1} time");
                 foreach (var animal in animals)
                 {
                    
@@ -81,16 +100,20 @@ namespace Zoo.BusinessLogic
                     { 
                         var food = foods.First();
                         animal.Eat(food);
+                        count++;
                         foods.Remove(food);
 
                         if (animal.Health!=0)
                         {
+
                             Console.WriteLine(animal);
                         }
                         
                     }                
                                       
                 }
+
+                
             }
 
             foreach (var animal in animals)

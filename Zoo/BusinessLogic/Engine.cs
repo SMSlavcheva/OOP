@@ -74,7 +74,7 @@ namespace Zoo.BusinessLogic
         {
             for (int i = 0; i < 5; i++)//1
             {
-                foreach (var animal in animals)// Tigyrcho
+                foreach (var animal in animals)
                 {
                    
                     if (animal.Health!=0)

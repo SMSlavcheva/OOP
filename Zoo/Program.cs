@@ -16,13 +16,16 @@ namespace Zoo
        public static void Main(string[] args)
        {            
 
-
-
         Engine engine = new Engine();
+            
             engine.FeedAnimals();
             Console.WriteLine();
             Console.WriteLine();
-          //  engine.PrintAliveanimals();
+
+            engine.PrintAnimalsData();
+         
+
+
         
             
             

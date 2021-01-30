@@ -10,61 +10,53 @@ namespace Zoo.Models
     {
         private const int Livespan=5;
         private string name;
-        private int health;
-        private IFood food;
-
-        //Ако умрат, не могат да говорят
-        public Animal(string name)
+               
+        protected Animal(string name)
         {
             this.Name = name;
             this.Health = Livespan;
         }
 
         public int Health { get; set; }
-        public string Name 
-        {
-            get 
-            {
-                return this.Name;
-            }
-            set 
-            {
+        public string Name { get; set; }
+       // {
+            //get 
+            //{
+            //    return this.Name;
+            //}
+            //set 
+            //{
 
-                if (string.IsNullOrEmpty(value))
-                {
-                    throw new ArgumentNullException(ExceptionMessages.InvalidNameException);
-                }
-            }        
-        }
+            //    if (string.IsNullOrEmpty(value))
+            //    {
+            //        throw new ArgumentNullException(ExceptionMessages.InvalidNameException);
+            //    }
+
+            //    this.name = value;
+            //}        
+       // }
 
        
         public virtual void Eat(IFood food)
         {
             throw new NotImplementedException();
         }
+              
 
-        public virtual string SayRestOfLive()
+        public virtual string Speak()
         {
-            if (this.Health==0)
-            {
-                return null;
-            }
-            return $"Rest of live: ";
-        }
+                      
+          return $"I'm {this.GetType().Name} {this.Name}. I have {this.Health} points live! ";   
+                 
 
-        public virtual string SayWhatIAm()
-        {
-            if (this.Health == 0)
-            {
-                return null;
-            }
-            return $"I'm ";
+            
         }
 
         public override string ToString()
         {
-            return $"I'm {this.GetType().Name}";
+            return $"{this.Speak()}";
         }
+
 
 
     }

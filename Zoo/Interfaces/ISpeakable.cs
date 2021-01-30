@@ -6,7 +6,7 @@ namespace Zoo.Interfaces
 {
     public interface ISpeakable
     {
-        string SayWhatIAm();
-        string SayRestOfLive();
+        string Speak();
+        
     }
 }

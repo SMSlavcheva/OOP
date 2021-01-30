@@ -6,6 +6,6 @@ namespace Zoo.Models.Food
 {
     public enum Not_Meat_Enum
     {
-        tomatoe, cucumber, potatoe,bananas,bread
+        tomatoe, cucumber, potatoe, bananas, bread
     }
 }

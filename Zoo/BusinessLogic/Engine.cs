@@ -11,7 +11,14 @@ namespace Zoo.BusinessLogic
 {
     public class Engine
     {
-        private void GeTListOfAllFoods()
+        private List<IAnimal> animalsList;
+        private List<IFood> foodsList;
+        public Engine()
+        {
+            InitAnimals();
+            InitFoods();
+        }
+        private List<string> GeTListOfAllFoods()
         {
             var foods = new List<string>();
 
@@ -26,113 +33,111 @@ namespace Zoo.BusinessLogic
             {
                 foods.Add(item);
             }
+            foods.Add("poison");
+
+            return foods;
         }
-        private void GeTListOfAllAnimals()
+        private List<Type> GetListOfAllAnimals()
         {
-            var animals = Assembly.GetExecutingAssembly().GetTypes()
+            return Assembly.GetExecutingAssembly().GetTypes()
                       .Where(t => t.Namespace == "Zoo.Models.Animals")
                       .ToList();
         }
-        
+
         //TODO to generate random object list Food/Animal
-        public IList<IFood> GeneratedRandomFoodList()
-
+        private void InitFoods()
         {
+            this.foodsList = new List<IFood>();
+            var listOfAllFoods = GeTListOfAllFoods();
+            var random = new Random();
+            for (int i = 0; i < 50; i++)
+            {
+                var name = listOfAllFoods[random.Next(listOfAllFoods.Count - 1)];
 
-            return null;
+                if (Enum.IsDefined(typeof(Not_Meat_Enum), name))
+                {                     
+                    foodsList.Add(new VeggieFood(name));
+                }
+                else if (Enum.IsDefined(typeof(Meat_Enum), name))
+                {                
+                    foodsList.Add(new MeatFood(name));
+                }
+                else
+                {
+                    foodsList.Add(new Poison());                
+                }
+            }   
         
         }
-        public IList<IAnimal> GeneratedRandomAnimalList()
 
+        private void InitAnimals()
         {
-
-            return null;
-
-        }
-        /// <summary>
-        /// 1.
-        /// /monkey-chicken
-        /// buffalo -tomatoe
-        /// pig-salami
-        /// bear- saucage
-        /// 
-        /// 2.buffalo-bread
-        /// bear-stake
-        /// 
-        /// 3.
-        /// </summary>
-
-        public IList<IAnimal> animals = new List<IAnimal>
-        { new Tiger("Tigyrcho"),new Monkey("Munmun"),new Lion("Lioncho"),new Buffalo("Buffi"), new Cat("Mazz"),
-           new Donkey("Mryn"), new Pig("Piggy"), new Camel("Camelcho"), new Bear("Misho"), new Giraffe("Gigii")
-        };
-
-        public IList<IFood> foods = new List<IFood>()
-        {
-         new Poison(),new MeatFood(Meat_Enum.chicken.ToString()),new Poison(),new VeggieFood(Not_Meat_Enum.tomatoe.ToString()),new Poison(),
-         new Poison(),new MeatFood(Meat_Enum.salami.ToString()),new Poison(),new MeatFood(Meat_Enum.sausage.ToString()),new Poison(),
-
-         new Poison(),new VeggieFood(Not_Meat_Enum.bread.ToString()),new Poison(),new MeatFood(Meat_Enum.stake.ToString()),new Poison(),
-         new Poison(),new VeggieFood(Not_Meat_Enum.bananas.ToString()),new Poison(),new MeatFood(Meat_Enum.sausage.ToString()),new Poison(),
-         new Poison(),new VeggieFood(Not_Meat_Enum.bread.ToString()),new Poison(),new MeatFood(Meat_Enum.stake.ToString()),new Poison(),
-         new VeggieFood(Not_Meat_Enum.bananas.ToString()),new Poison(),new MeatFood(Meat_Enum.sausage.ToString()),new Poison(),
-         new Poison(),new MeatFood(Meat_Enum.chicken.ToString()),new Poison(),new VeggieFood(Not_Meat_Enum.tomatoe.ToString()),new Poison(),
-         new Poison(),new MeatFood(Meat_Enum.salami.ToString()),new Poison(),new MeatFood(Meat_Enum.sausage.ToString()),new Poison(),
-         new Poison(),new VeggieFood(Not_Meat_Enum.bread.ToString()),new Poison(),new MeatFood(Meat_Enum.stake.ToString()),new Poison(),
-         new Poison(),new VeggieFood(Not_Meat_Enum.bananas.ToString()),new Poison(),new MeatFood(Meat_Enum.sausage.ToString()),new Poison(),
-        };
-
-
-        public void FeedAnimals()
-        {
-            for (int i = 0; i < 5; i++)//1
+            this.animalsList = new List<IAnimal>();
+            var animalTypes = GetListOfAllAnimals();
+            var random = new Random();
+            for (int i = 0; i < 10; i++)
             {
-                if (animals.All(a=>a.Health==0))
-                {
-                    break;
-                }
-                var count = 0;
-                Console.WriteLine($" {i+1} time");
-                foreach (var animal in animals)
-                {
-                   
-                    if (animal.Health!=0)
-                    { 
-                        var food = foods.First();
-                        animal.Eat(food);
-                        count++;
-                        foods.Remove(food);
-
-                        if (animal.Health!=0)
-                        {
-
-                            Console.WriteLine(animal);
-                        }
-                        
-                    }                
-                                      
-                }
-
-                
+                var animalType = animalTypes[random.Next(animalTypes.Count() - 1)];
+                var instanceType = Type.GetType(animalType.FullName);
+                var animal = Activator.CreateInstance(instanceType, GetRandomName());
+                animalsList.Add((IAnimal)animal);
             }
+        }
 
-            foreach (var animal in animals)
+        private string GetRandomName(int minLen = 3, int maxLen = 10)
+        {
+            var rnd = new Random();
+            var len = rnd.Next(minLen, maxLen);
+            var name = "";
+            for (int i = 0; i < len - 1; i++){
+                var c = (char)((char)'a' + rnd.Next(0, 26));
+                name += i == 0 ? c.ToString().ToUpper() : c.ToString();
+            }
+            return name;
+        }
+
+   
+                   
+
+        public void PrintAnimalsData()
+        {
+            foreach (var animal in animalsList)
             {
                 Console.WriteLine(animal);
             }
-               
+
+        }
+        public void FeedAnimals()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                if (animalsList.All(a => a.Health == 0))
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine($"Feeding: {i + 1} ");
+                    foreach (var animal in animalsList)
+                    {
+                        if (animal.Health != 0)
+                        {
+                            var food = foodsList.First();
+                            animal.Eat(food);
+                            foodsList.Remove(food);
+
+                            if (animal.Health != 0)
+                            {
+                                Console.WriteLine(animal);
+                            }
+                        }
+
+                    }
+                }
+            }
         }
 
-        //public void PrintAliveAnimals()
-        //{
-        //    var aliveAnimals = animals.Where(a => a.Health != 0);
 
-        //    foreach (var alive in aliveAnimals)
-        //    {
-        //        Console.WriteLine(alive);
-        //    }
-        
-        //}
 
     }
 }

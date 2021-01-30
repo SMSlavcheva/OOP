@@ -9,22 +9,14 @@ namespace Zoo.Models
 {
     public abstract class Herbivorous :Animal
     {
-        //public Not_Meat_Enum allowedFood { get; set; }
+        
         public string foodEaten;
 
-        public Herbivorous(string name):base(name)
-        {        
+        protected Herbivorous(string name):base(name)
+        {   
             
         }
-        public override string SayRestOfLive()
-        {
-            return base.SayRestOfLive();
-        }
-
-        public override string SayWhatIAm()
-        {
-            return base.SayWhatIAm() + GetType().Name;
-        }
+       
         public override void Eat(IFood food)
 
         {
@@ -49,17 +41,22 @@ namespace Zoo.Models
             this.foodEaten = foodType;
 
         }
+        public override string Speak()
+        {
+            
+           return $"I'm {this.GetType().Name} {this.Name}. I have {this.Health} points live! ";
+          
 
-       
+        }
+
         //като след всяко хранене животното трябва да каже какво е, какво е яло,
         //колко точки живот са му останали. Ако е умряло, пазача го прескача и дава храна на другите. 
 
         //След като мине 5-тото хранене, да се изпринтират животните и техните данни.
         public override string ToString()
         {
-            return base.ToString() + $"\nI have eaten {this.foodEaten}\nI have {this.Health} points live.";
+            return base.ToString() + $"I have eaten {this.foodEaten}";
         }
-
 
     }
 

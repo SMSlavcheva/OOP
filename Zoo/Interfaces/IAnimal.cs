@@ -8,7 +8,6 @@ namespace Zoo.Interfaces
     public interface IAnimal
     {
         string Name { get; set; }
-
         int Health { get; set; }
         public void Eat(IFood food);
 

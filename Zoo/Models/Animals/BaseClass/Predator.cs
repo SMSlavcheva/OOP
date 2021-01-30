@@ -9,19 +9,10 @@ namespace Zoo.Models
    public abstract class Predator:Animal
     {
         private string foodEaten;
-        public Predator(string name) : base(name)
+        protected Predator(string name) : base(name)
         {          
         }
-
-        public override string SayRestOfLive()
-        {
-            return base.SayRestOfLive();
-        }
-
-        public override string SayWhatIAm()
-        {
-            return base.SayWhatIAm() + GetType().Name;
-        }
+              
         public override void Eat(IFood food)
 
         {
@@ -42,9 +33,17 @@ namespace Zoo.Models
                 this.foodEaten = foodType;
             }
         }
+
+        public override string Speak()
+        {
+           
+          return $"I'm {this.GetType().Name} {this.Name}. I have {this.Health} points live! ";           
+
+            
+        }
         public override string ToString()
         {
-            return base.ToString() + $"\nI have eaten {this.foodEaten}.\nI have {this.Health} resting live points";
+            return base.ToString() + $"I have eaten {this.foodEaten}.";
         }
     }
 }

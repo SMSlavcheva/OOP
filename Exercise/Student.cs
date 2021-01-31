@@ -25,7 +25,7 @@ namespace Exercise
             }
             else
             {
-                Console.WriteLine($"{this.ToString()} and have studied {this.Subject}");
+                Console.WriteLine($"{this.ToString()} have studied {this.Subject}");
             }
 
         }
